@@ -5,16 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import com.rrat.navigationfragmentdemo.databinding.FragmentEnterDetailsBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EnterDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class EnterDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding: FragmentEnterDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +24,39 @@ class EnterDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_enter_details, container, false)
+        binding = FragmentEnterDetailsBinding.inflate(inflater, container, false)
+
+
+
+        val btnVerifyDetails = binding.btnVerifyDetails
+
+        btnVerifyDetails.setOnClickListener {
+
+            val firstName = binding.etFirstName.text.toString()
+            val mobile = binding.etMobile.text.toString()
+
+            when{
+                firstName.isEmpty()->{
+                    Toast.makeText(activity, "Enter Name.", Toast.LENGTH_SHORT).show()
+                }
+                mobile.isEmpty()->{
+                    Toast.makeText(activity, "Enter Mobile Number.", Toast.LENGTH_SHORT).show()
+                }
+                else->
+                {
+
+
+                    findNavController()
+                        .navigate(
+                            EnterDetailsFragmentDirections.
+                            actionEnterDetailsFragmentToVerifyDetailsFragment(firstName, mobile.toLong())
+                        )
+                }
+            }
+
+
+        }
+
+        return binding.root
     }
 }
